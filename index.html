@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quimigrate.AI — Intelligent Immigration Form Preparation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal: #0FBF9B;
+            --teal-dark: #0DA889;
+            --teal-light: #E6F9F4;
+            --teal-soft: #D1F2EB;
+            --navy: #1A2332;
+            --navy-light: #2A3548;
+            --navy-dark: #0F1724;
+            --white: #FFFFFF;
+            --gray-50: #F8FAFB;
+            --gray-100: #F1F5F9;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E1;
+            --gray-400: #94A3B8;
+            --gray-500: #64748B;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1E293B;
+            --shadow-sm: 0 1px 3px rgba(26, 35, 50, 0.06);
+            --shadow-md: 0 4px 16px rgba(26, 35, 50, 0.08);
+            --shadow-lg: 0 8px 32px rgba(26, 35, 50, 0.1);
+            --shadow-xl: 0 16px 48px rgba(26, 35, 50, 0.12);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--navy);
+            background: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--teal);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-logo-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .nav-logo-text span {
+            color: var(--teal);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-link:hover {
+            color: var(--navy);
+            background: var(--gray-100);
+        }
+
+        .nav-link.active {
+            color: var(--teal);
+            background: var(--teal-light);
+        }
+
+        .nav-cta {
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            background: var(--teal);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            margin-left: 8px;
+        }
+
+        .nav-cta:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(15, 191, 155, 0.3);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--navy);
+            margin: 6px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .mobile-toggle.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+
+        .mobile-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            padding: 140px 24px 80px;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 50%, var(--teal-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(15, 191, 155, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--teal-light);
+            border: 1px solid var(--teal-soft);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--teal-dark);
+            margin-bottom: 24px;
+        }
+
+        .hero-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            color: var(--navy);
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero h1 span {
+            color: var(--teal);
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--gray-600);
+            line-height: 1.7;
+            margin-bottom: 36px;
+            max-width: 520px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--teal);
+            color: var(--white);
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary:hover {
+            background: var(--teal-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(15, 191, 155, 0.3);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--white);
+            color: var(--navy);
+            font-size: 15px;
+            font-weight: 600;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .hero-float-card {
+            position: absolute;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            box-shadow: var(--shadow-lg);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-float-card.card-1 {
+            bottom: -20px;
+            left: -30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-float-card.card-2 {
+            top: 30px;
+            right: -20px;
+            animation-delay: -3s;
+        }
+
+        .float-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--teal-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .float-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--teal);
+        }
+
+        .float-label {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .float-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            background: var(--navy);
+            padding: 40px 24px;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--teal);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--gray-400);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features {
+            padding: 100px 24px;
+            background: var(--white);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--teal-light);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--teal-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 42px);
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 17px;
+            color: var(--gray-500);
+            max-width: 600px;
+            line-height: 1.7;
+            margin-bottom: 56px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 36px 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--teal);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--teal-soft);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--teal-light);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--teal);
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: var(--navy);
+        }
+
+        .feature-card p {
+            font-size: 15px;
+            color: var(--gray-500);
+            line-height: 1.7;
+        }
+
+        /* ===== HOW IT WORKS ===== */
+        .how-it-works {
+            padding: 100px 24px;
+            background: var(--gray-50);
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 56px;
+        }
+
+        .step-card {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-card::after {
+            content: '';
+            position: absolute;
+            top: 32px;
+            right: -12px;
+            width: 24px;
+            height: 2px;
+            background: var(--teal-soft);
+        }
+
+        .step-card:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            width: 64px;
+            height: 64px;
+            background: var(--white);
+            border: 2px solid var(--teal-soft);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--teal);
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover .step-number {
+            background: var(--teal);
+            color: var(--white);
+            border-color: var(--teal);
+            transform: scale(1.05);
+        }
+
+        .step-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--navy);
+        }
+
+        .step-card p {
+            font-size: 14px;
+            color: var(--gray-500);
+            line-height: 1.6;
+        }
+
+        /* ===== AUDIENCE SECTION ===== */
+        .audience {
+            padding: 100px 24px;
+            background: var(--white);
+        }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 56px;
+        }
+
+        .audience-card {
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+
+        .audience-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .audience-card .audience-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--teal-light);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .audience-card .audience-icon svg {
+            width: 28px;
+            height: 28px;
+            color: var(--teal);
+        }
+
+        .audience-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: var(--navy);
+        }
+
+        .audience-card p {
+            font-size: 15px;
+            color: var(--gray-500);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .audience-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .audience-card ul li {
+            padding: 8px 0;
+            font-size: 14px;
+            color: var(--gray-600);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .audience-card ul li svg {
+            width: 16px;
+            height: 16px;
+            color: var(--teal);
+            flex-shrink: 0;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            padding: 100px 24px;
+            background: var(--navy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(15, 191, 155, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cta-section::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(15, 191, 155, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .cta-content p {
+            font-size: 17px;
+            color: var(--gray-400);
+            margin-bottom: 36px;
+            line-height: 1.7;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== ABOUT PAGE ===== */
+        .about-hero {
+            padding: 140px 24px 80px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            text-align: center;
+        }
+
+        .about-hero h1 {
+            font-size: clamp(36px, 5vw, 52px);
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .about-hero p {
+            font-size: 18px;
+            color: var(--gray-400);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .about-story {
+            padding: 100px 24px;
+            background: var(--white);
+        }
+
+        .about-story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-story-image {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .about-story-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-story-content h2 {
+            font-size: clamp(28px, 3.5vw, 38px);
+            color: var(--navy);
+            margin-bottom: 20px;
+        }
+
+        .about-story-content p {
+            font-size: 16px;
+            color: var(--gray-600);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .founder-card {
+            padding: 100px 24px;
+            background: var(--gray-50);
+        }
+
+        .founder-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 48px;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .founder-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal-light) 0%, var(--teal-soft) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .founder-avatar svg {
+            width: 80px;
+            height: 80px;
+            color: var(--teal);
+        }
+
+        .founder-info blockquote {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--navy);
+            line-height: 1.7;
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 24px;
+            border-left: 3px solid var(--teal);
+        }
+
+        .founder-name {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 16px;
+        }
+
+        .founder-title {
+            color: var(--gray-500);
+            font-size: 14px;
+        }
+
+        .privacy-section {
+            padding: 100px 24px;
+            background: var(--white);
+        }
+
+        .privacy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .privacy-image {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .privacy-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .privacy-content h2 {
+            font-size: clamp(28px, 3.5vw, 38px);
+            color: var(--navy);
+            margin-bottom: 20px;
+        }
+
+        .privacy-content p {
+            font-size: 16px;
+            color: var(--gray-600);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .privacy-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .privacy-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .privacy-feature svg {
+            width: 18px;
+            height: 18px;
+            color: var(--teal);
+            flex-shrink: 0;
+        }
+
+        /* ===== CONTACT PAGE ===== */
+        .contact-hero {
+            padding: 140px 24px 80px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            text-align: center;
+        }
+
+        .contact-hero h1 {
+            font-size: clamp(36px, 5vw, 52px);
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .contact-hero p {
+            font-size: 18px;
+            color: var(--gray-400);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .contact-section {
+            padding: 100px 24px;
+            background: var(--gray-50);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .contact-info h2 {
+            font-size: 32px;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .contact-info > p {
+            font-size: 16px;
+            color: var(--gray-500);
+            line-height: 1.7;
+            margin-bottom: 36px;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .contact-detail-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--teal-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-detail-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--teal);
+        }
+
+        .contact-detail-label {
+            font-size: 12px;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .contact-detail-value {
+            font-size: 15px;
+            color: var(--navy);
+            font-weight: 500;
+        }
+
+        .contact-form-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+        }
+
+        .contact-form-card h3 {
+            font-size: 22px;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .contact-form-card > p {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 6px;
+        }
+
+        .form-label .required {
+            color: #E74C3C;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            color: var(--navy);
+            background: var(--white);
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(15, 191, 155, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #E74C3C;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .form-error {
+            font-size: 12px;
+            color: #E74C3C;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 14px 28px;
+            background: var(--teal);
+            color: var(--white);
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Inter', sans-serif;
+            margin-top: 8px;
+        }
+
+        .form-submit:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(15, 191, 155, 0.3);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .form-success.show {
+            display: block;
+        }
+
+        .form-success-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--teal-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .form-success-icon svg {
+            width: 32px;
+            height: 32px;
+            color: var(--teal);
+        }
+
+        .form-success h4 {
+            font-size: 22px;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .form-success p {
+            font-size: 15px;
+            color: var(--gray-500);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--navy-dark);
+            padding: 60px 24px 30px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            color: var(--gray-400);
+            line-height: 1.7;
+            margin-top: 16px;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 14px;
+            color: var(--gray-400);
+            text-decoration: none;
+            padding: 4px 0;
+            transition: color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .footer-col a:hover {
+            color: var(--teal);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom p {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-social a {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .footer-social a:hover {
+            background: var(--teal);
+        }
+
+        .footer-social a svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--gray-400);
+        }
+
+        .footer-social a:hover svg {
+            fill: var(--white);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-image {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 32px;
+            }
+
+            .step-card::after {
+                display: none;
+            }
+
+            .audience-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-story-grid,
+            .privacy-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .founder-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                flex-direction: column;
+                padding: 20px;
+                border-bottom: 1px solid var(--gray-200);
+                box-shadow: var(--shadow-lg);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+            }
+
+            .nav-cta {
+                margin-left: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-float-card {
+                display: none;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .privacy-features {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-form-card {
+                padding: 28px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 120px 16px 60px;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .cta-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stat-number {
+                font-size: 28px;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-delay-1 { transition-delay: 0.1s; }
+        .fade-in-delay-2 { transition-delay: 0.2s; }
+        .fade-in-delay-3 { transition-delay: 0.3s; }
+        .fade-in-delay-4 { transition-delay: 0.4s; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a class="nav-logo" onclick="navigateTo('home')">
+                <div class="nav-logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                </div>
+                <span class="nav-logo-text">Quimigrate<span>.AI</span></span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <button class="nav-link active" data-page="home" onclick="navigateTo('home')">Home</button>
+                <button class="nav-link" data-page="about" onclick="navigateTo('about')">About Us</button>
+                <button class="nav-link" data-page="contact" onclick="navigateTo('contact')">Contact Us</button>
+                <a class="nav-cta" onclick="navigateTo('contact')">Book Consultation</a>
+            </div>
+            <button class="mobile-toggle" id="mobileToggle" onclick="toggleMobile()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== HOME PAGE ===== -->
+    <div class="page active" id="page-home">
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-container">
+                <div>
+                    <div class="hero-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        AI-Powered Immigration Assistant
+                    </div>
+                    <h1>Smart Immigration Forms, <span>Effortlessly</span> Prepared</h1>
+                    <p class="hero-subtitle">Our intelligent chatbot guides individuals and law firms through complex immigration paperwork — reducing errors, saving hours, and accelerating every case from intake to submission.</p>
+                    <div class="hero-actions">
+                        <button class="btn-primary" onclick="navigateTo('contact')">
+                            Launch the App
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                        <button class="btn-secondary" onclick="navigateTo('about')">
+                            Learn More
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://image.qwenlm.ai/public_source/dc7f6204-38fd-4a7a-8611-28fda137835a/115595378-16fa-41bf-ace6-8f7b6fd0c6b4.png" alt="AI assistant helping with immigration documents">
+                    <div class="hero-float-card card-1">
+                        <div class="float-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                        </div>
+                        <div>
+                            <div class="float-label">Forms Completed</div>
+                            <div class="float-value">12,400+</div>
+                        </div>
+                    </div>
+                    <div class="hero-float-card card-2">
+                        <div class="float-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div>
+                            <div class="float-label">Accuracy Rate</div>
+                            <div class="float-value">99.2%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Bar -->
+        <section class="stats-bar">
+            <div class="stats-container">
+                <div class="stat-item fade-in">
+                    <div class="stat-number">12K+</div>
+                    <div class="stat-label">Forms Processed</div>
+                </div>
+                <div class="stat-item fade-in fade-in-delay-1">
+                    <div class="stat-number">340+</div>
+                    <div class="stat-label">Law Firms</div>
+                </div>
+                <div class="stat-item fade-in fade-in-delay-2">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Client Satisfaction</div>
+                </div>
+                <div class="stat-item fade-in fade-in-delay-3">
+                    <div class="stat-number">4.9★</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features">
+            <div class="section-container">
+                <div class="section-tag">Core Capabilities</div>
+                <h2 class="section-title fade-in">Intelligence Built for Immigration</h2>
+                <p class="section-subtitle fade-in">Every feature is designed to eliminate friction from the immigration process — whether you're filing for yourself or managing a hundred cases.</p>
+                <div class="features-grid">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+                        <h3>Conversational Intake</h3>
+                        <p>Our chatbot asks the right questions in plain language, translating complex legal requirements into simple, guided conversations.</p>
+                    </div>
+                    <div class="feature-card fade-in fade-in-delay-1">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
+                        </div>
+                        <h3>Auto-Form Population</h3>
+                        <p>Information gathered through conversation automatically populates USCIS forms — no manual data entry, no copy-paste errors.</p>
+                    </div>
+                    <div class="feature-card fade-in fade-in-delay-2">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                        </div>
+                        <h3>Error Detection</h3>
+                        <p>Real-time validation catches inconsistencies, missing fields, and common mistakes before submission — reducing RFEs dramatically.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3>Multi-Client Dashboard</h3>
+                        <p>Law firms manage all their cases from a single dashboard — track progress, review drafts, and communicate with clients seamlessly.</p>
+                    </div>
+                    <div class="feature-card fade-in fade-in-delay-1">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h3>Bank-Grade Security</h3>
+                        <p>All client data is encrypted at rest and in transit. We're SOC 2 compliant and never share information with third parties.</p>
+                    </div>
+                    <div class="feature-card fade-in fade-in-delay-2">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        </div>
+                        <h3>Time Savings</h3>
+                        <p>What used to take attorneys 3–4 hours of intake now takes 20 minutes. Reclaim billable hours for higher-value legal work.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <div class="section-container">
+                <div class="section-tag">How It Works</div>
+                <h2 class="section-title fade-in">Four Steps to a Completed Filing</h2>
+                <p class="section-subtitle fade-in">From first conversation to final submission, our platform handles the complexity so you can focus on what matters.</p>
+                <div class="steps-container">
+                    <div class="step-card fade-in">
+                        <div class="step-number">01</div>
+                        <h3>Start a Conversation</h3>
+                        <p>Open the chatbot and answer simple questions about your case — no legal jargon required.</p>
+                    </div>
+                    <div class="step-card fade-in fade-in-delay-1">
+                        <div class="step-number">02</div>
+                        <h3>Review Your Forms</h3>
+                        <p>The AI drafts your immigration forms. Review, edit, or ask follow-up questions anytime.</p>
+                    </div>
+                    <div class="step-card fade-in fade-in-delay-2">
+                        <div class="step-number">03</div>
+                        <h3>Attorney Approval</h3>
+                        <p>For law firms, your attorney reviews and signs off before anything leaves the office.</p>
+                    </div>
+                    <div class="step-card fade-in fade-in-delay-3">
+                        <div class="step-number">04</div>
+                        <h3>Submit with Confidence</h3>
+                        <p>Download completed, error-checked forms ready for USCIS submission — or file directly.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Audience -->
+        <section class="audience">
+            <div class="section-container">
+                <div class="section-tag">Who It's For</div>
+                <h2 class="section-title fade-in">Built for Everyone in the Process</h2>
+                <p class="section-subtitle fade-in">Whether you're navigating your own immigration journey or managing hundreds of client cases, Quimigrate.AI adapts to your needs.</p>
+                <div class="audience-grid">
+                    <div class="audience-card fade-in">
+                        <div class="audience-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </div>
+                        <h3>For Individuals</h3>
+                        <p>Navigate the immigration system without the confusion. Our chatbot explains every step in plain English and ensures your forms are complete and accurate.</p>
+                        <ul>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                                Guided step-by-step conversations
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                                Automatic form population
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                                Real-time error checking
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                                Download-ready USCIS forms
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="audience-card fade-in fade-in-delay-1">
+                        <div class="audience-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                        </div>
+                        <h3>For Law Firms</h3>
+                        <p>Scale your immigration practice without scaling your overhead. Automate client intake, reduce administrative burden, and deliver faster results.</p>
+                        <ul>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                                Multi-client case dashboard
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                                Branded client portal
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                                Attorney review workflow
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                                Bulk form generation
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <div class="cta-content fade-in">
+                <h2>Ready to Transform Your Immigration Workflow?</h2>
+                <p>Join hundreds of law firms and thousands of individuals who've simplified their immigration journey with Quimigrate.AI.</p>
+                <div class="cta-actions">
+                    <button class="btn-primary" onclick="navigateTo('contact')">
+                        Get Started Free
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                    <button class="btn-secondary" style="background: transparent; color: white; border-color: rgba(255,255,255,0.2);" onclick="navigateTo('about')">
+                        See How It Works
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===== ABOUT PAGE ===== -->
+    <div class="page" id="page-about">
+        <section class="about-hero">
+            <div class="section-container">
+                <div class="hero-badge" style="background: rgba(15,191,155,0.15); border-color: rgba(15,191,155,0.3); color: var(--teal);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    Our Story
+                </div>
+                <h1>Born from Real Immigration Challenges</h1>
+                <p>Quimigrate.AI emerged from years of watching brilliant legal professionals drown in paperwork — and immigrants struggle to navigate a system not built for them.</p>
+            </div>
+        </section>
+
+        <section class="about-story">
+            <div class="section-container">
+                <div class="about-story-grid">
+                    <div class="about-story-image fade-in">
+                        <img src="https://image.qwenlm.ai/public_source/dc7f6204-38fd-4a7a-8611-28fda137835a/1b4038074-4efd-425d-923a-6ae0f2824ec9.png" alt="Professional using AI chatbot">
+                    </div>
+                    <div class="about-story-content fade-in fade-in-delay-1">
+                        <div class="section-tag">Our Evolution</div>
+                        <h2>From Quimigrate to Quimigrate.AI</h2>
+                        <p>Quimigrate began as a flat-fee immigration service helping thousands of clients navigate U.S. immigration law. Along the way, we noticed a pattern: the same questions, the same forms, the same bottlenecks — repeated across every case.</p>
+                        <p>We realized that much of the intake and form-preparation work could be intelligently automated without sacrificing accuracy or compliance. So we built an AI layer on top of our proven legal workflows — and Quimigrate.AI was born.</p>
+                        <p>Today, our platform serves both individual applicants and law firms across all 50 states, processing thousands of immigration forms each month with industry-leading accuracy.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="founder-card">
+            <div class="section-container">
+                <div class="founder-grid fade-in">
+                    <div class="founder-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                    <div class="founder-info">
+                        <div class="section-tag">From the Founder</div>
+                        <blockquote>"I started Quimigrate because I saw too many people lose their immigration cases over simple paperwork errors. When we added AI to the process, we didn't just make things faster — we made them more human. The chatbot asks questions the way a good attorney would, with patience and clarity."</blockquote>
+                        <div class="founder-name">Alex Rivera</div>
+                        <div class="founder-title">Founder & CEO, Quimigrate.AI</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="privacy-section">
+            <div class="section-container">
+                <div class="privacy-grid">
+                    <div class="privacy-content fade-in">
+                        <div class="section-tag">Trust & Compliance</div>
+                        <h2>Your Data, Protected at Every Layer</h2>
+                        <p>Immigration data is among the most sensitive personal information you can share. We treat it that way. Quimigrate.AI is built on a foundation of privacy-first architecture, with encryption, access controls, and compliance baked into every layer of the platform.</p>
+                        <p>We are SOC 2 Type II certified, GDPR-compliant, and adhere to ABA guidelines for client data handling. Your information is never sold, shared, or used for training third-party models.</p>
+                        <div class="privacy-features">
+                            <div class="privacy-feature">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                AES-256 Encryption
+                            </div>
+                            <div class="privacy-feature">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                SOC 2 Type II
+                            </div>
+                            <div class="privacy-feature">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                GDPR Compliant
+                            </div>
+                            <div class="privacy-feature">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                ABA Guidelines
+                            </div>
+                            <div class="privacy-feature">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                Zero Data Sharing
+                            </div>
+                            <div class="privacy-feature">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                Regular Audits
+                            </div>
+                        </div>
+                    </div>
+                    <div class="privacy-image fade-in fade-in-delay-1">
+                        <img src="https://image.qwenlm.ai/public_source/dc7f6204-38fd-4a7a-8611-28fda137835a/16fd1a0dc-2616-4225-b205-ac94b26b41a7.png" alt="Data security and privacy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="cta-content fade-in">
+                <h2>Join the Future of Immigration Practice</h2>
+                <p>Whether you're an individual applicant or a growing law firm, Quimigrate.AI is ready to help you work smarter.</p>
+                <div class="cta-actions">
+                    <button class="btn-primary" onclick="navigateTo('contact')">
+                        Get in Touch
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                    <button class="btn-secondary" style="background: transparent; color: white; border-color: rgba(255,255,255,0.2);" onclick="navigateTo('home')">
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===== CONTACT PAGE ===== -->
+    <div class="page" id="page-contact">
+        <section class="contact-hero">
+            <div class="section-container">
+                <div class="hero-badge" style="background: rgba(15,191,155,0.15); border-color: rgba(15,191,155,0.3); color: var(--teal);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+                    Get in Touch
+                </div>
+                <h1>Let's Talk About Your Practice</h1>
+                <p>Whether you're a solo practitioner or a multi-office firm, we'd love to learn about your needs and show you how Quimigrate.AI can help.</p>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="contact-grid">
+                <div class="contact-info fade-in">
+                    <h2>We're Here to Help</h2>
+                    <p>Fill out the form and a member of our team will reach out within one business day. For urgent inquiries, feel free to email us directly.</p>
+                    <div class="contact-details">
+                        <div class="contact-detail">
+                            <div class="contact-detail-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+                            </div>
+                            <div>
+                                <div class="contact-detail-label">Email</div>
+                                <div class="contact-detail-value">hello@quimigrate.ai</div>
+                            </div>
+                        </div>
+                        <div class="contact-detail">
+                            <div class="contact-detail-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </div>
+                            <div>
+                                <div class="contact-detail-label">Phone</div>
+                                <div class="contact-detail-value">+1 (800) 555-0142</div>
+                            </div>
+                        </div>
+                        <div class="contact-detail">
+                            <div class="contact-detail-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <div>
+                                <div class="contact-detail-label">Office</div>
+                                <div class="contact-detail-value">San Francisco, CA</div>
+                            </div>
+                        </div>
+                        <div class="contact-detail">
+                            <div class="contact-detail-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            </div>
+                            <div>
+                                <div class="contact-detail-label">Response Time</div>
+                                <div class="contact-detail-value">Within 24 hours</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-card fade-in fade-in-delay-1">
+                    <div id="formContent">
+                        <h3>Law Firm Intake Form</h3>
+                        <p>Tell us about your practice and we'll tailor a solution for you.</p>
+                        <form id="contactForm" onsubmit="handleSubmit(event)">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name <span class="required">*</span></label>
+                                    <input type="text" class="form-input" id="name" placeholder="Jane Smith" required>
+                                    <div class="form-error" id="nameError">Please enter your full name</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email Address <span class="required">*</span></label>
+                                    <input type="email" class="form-input" id="email" placeholder="jane@lawfirm.com" required>
+                                    <div class="form-error" id="emailError">Please enter a valid email</div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number <span class="required">*</span></label>
+                                    <input type="tel" class="form-input" id="phone" placeholder="+1 (555) 000-0000" required>
+                                    <div class="form-error" id="phoneError">Please enter a valid phone number</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Firm Size <span class="required">*</span></label>
+                                    <select class="form-select" id="firmSize" required>
+                                        <option value="">Select firm size</option>
+                                        <option value="solo">Solo Practitioner</option>
+                                        <option value="small">Small (2–10 attorneys)</option>
+                                        <option value="medium">Medium (11–50 attorneys)</option>
+                                        <option value="large">Large (50+ attorneys)</option>
+                                    </select>
+                                    <div class="form-error" id="firmSizeError">Please select a firm size</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Expected Monthly Caseload <span class="required">*</span></label>
+                                <select class="form-select" id="caseload" required>
+                                    <option value="">Select monthly caseload</option>
+                                    <option value="1-10">1–10 cases</option>
+                                    <option value="11-50">11–50 cases</option>
+                                    <option value="51-100">51–100 cases</option>
+                                    <option value="100+">100+ cases</option>
+                                </select>
+                                <div class="form-error" id="caseloadError">Please select your caseload</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Additional Notes</label>
+                                <input type="text" class="form-input" id="notes" placeholder="Tell us about your specific needs (optional)">
+                            </div>
+                            <button type="submit" class="form-submit" id="submitBtn">
+                                Submit Inquiry
+                            </button>
+                        </form>
+                    </div>
+                    <div class="form-success" id="formSuccess">
+                        <div class="form-success-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                        </div>
+                        <h4>Thank You!</h4>
+                        <p>Your inquiry has been received. A member of our team will reach out within one business day.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="cta-content fade-in">
+                <h2>Prefer to Explore First?</h2>
+                <p>Learn more about our platform, security practices, and how we're transforming immigration law.</p>
+                <div class="cta-actions">
+                    <button class="btn-primary" onclick="navigateTo('about')">
+                        Read Our Story
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                    <button class="btn-secondary" style="background: transparent; color: white; border-color: rgba(255,255,255,0.2);" onclick="navigateTo('home')">
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a class="nav-logo" onclick="navigateTo('home')" style="cursor: pointer;">
+                        <div class="nav-logo-icon">
+                            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="white"/></svg>
+                        </div>
+                        <span class="nav-logo-text" style="color: white;">Quimigrate<span>.AI</span></span>
+                    </a>
+                    <p>Intelligent immigration form preparation for individuals and law firms. Built on trust, powered by AI.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <a onclick="navigateTo('home')">Features</a>
+                    <a onclick="navigateTo('home')">How It Works</a>
+                    <a onclick="navigateTo('home')">For Individuals</a>
+                    <a onclick="navigateTo('home')">For Law Firms</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <a onclick="navigateTo('about')">About Us</a>
+                    <a onclick="navigateTo('about')">Privacy & Security</a>
+                    <a onclick="navigateTo('contact')">Contact</a>
+                    <a>Careers</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a>Terms of Service</a>
+                    <a>Privacy Policy</a>
+                    <a>Cookie Policy</a>
+                    <a>Compliance</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Quimigrate.AI. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+                    </a>
+                    <a href="#" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                    <a href="#" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation
+        function navigateTo(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            const targetPage = document.getElementById('page-' + page);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                setTimeout(() => targetPage.style.opacity = '1', 10);
+            }
+
+            const navLink = document.querySelector(`.nav-link[data-page="${page}"]`);
+            if (navLink) navLink.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('open');
+            document.getElementById('mobileToggle').classList.remove('open');
+
+            // Re-trigger fade animations
+            setTimeout(() => observeElements(), 100);
+        }
+
+        function toggleMobile() {
+            document.getElementById('navLinks').classList.toggle('open');
+            document.getElementById('mobileToggle').classList.toggle('open');
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Fade-in observer
+        function observeElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                if (!el.classList.contains('visible')) {
+                    observer.observe(el);
+                }
+            });
+        }
+
+        // Form handling
+        function handleSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const phone = document.getElementById('phone');
+            const firmSize = document.getElementById('firmSize');
+            const caseload = document.getElementById('caseload');
+            
+            let isValid = true;
+
+            // Reset errors
+            document.querySelectorAll('.form-input, .form-select').forEach(el => el.classList.remove('error'));
+            document.querySelectorAll('.form-error').forEach(el => el.classList.remove('show'));
+
+            // Validate name
+            if (!name.value.trim()) {
+                name.classList.add('error');
+                document.getElementById('nameError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                email.classList.add('error');
+                document.getElementById('emailError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate phone
+            const phoneClean = phone.value.replace(/\D/g, '');
+            if (phoneClean.length < 10) {
+                phone.classList.add('error');
+                document.getElementById('phoneError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate firm size
+            if (!firmSize.value) {
+                firmSize.classList.add('error');
+                document.getElementById('firmSizeError').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate caseload
+            if (!caseload.value) {
+                caseload.classList.add('error');
+                document.getElementById('caseloadError').classList.add('show');
+                isValid = false;
+            }
+
+            if (isValid) {
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+
+                setTimeout(() => {
+                    document.getElementById('formContent').style.display = 'none';
+                    document.getElementById('formSuccess').classList.add('show');
+                }, 800);
+            }
+        }
+
+        // Real-time validation
+        document.querySelectorAll('.form-input, .form-select').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('error');
+                const errorEl = this.parentElement.querySelector('.form-error');
+                if (errorEl) errorEl.classList.remove('show');
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            observeElements();
+        });
+    </script>
+</body>
+</html>
+
